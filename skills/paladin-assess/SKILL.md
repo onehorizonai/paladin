@@ -80,10 +80,27 @@ Routing to PR security review and focusing on changed code plus required surroun
 Run:
 
 ```bash
+git branch --show-current
 gh pr view --json number,title,url 2>/dev/null
 ```
 
-If a PR exists for the current branch, route to `paladin-pr-review`. If `gh` fails, skip silently.
+If a PR exists for the current branch, route to `paladin-pr-review`.
+
+If `gh` is missing, unauthenticated, or fails:
+
+1. Check common PR environment signals before giving up:
+
+```bash
+printf '%s\n' "$GH_PR_NUMBER" "$PR_NUMBER" "$CHANGE_ID" "$GITHUB_HEAD_REF" "$GITHUB_REF" "$CI_PULL_REQUEST" "$CIRCLE_PULL_REQUEST" "$BUILDKITE_PULL_REQUEST"
+```
+
+2. If an environment signal identifies a PR number, PR URL, or pull-request ref, route to `paladin-pr-review`.
+3. If no signal exists, surface a short branch note and continue to Check F:
+
+```text
+Paladin could not verify an open PR for branch [branch] because gh is unavailable or unauthenticated.
+No local diff was found, so routing needs one clarification.
+```
 
 ### Check F - No Clear Context
 

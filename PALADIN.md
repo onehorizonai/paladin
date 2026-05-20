@@ -87,6 +87,8 @@ paladin_source_list: references/security-sources.md
 
 Paladin should read this source list before checking "latest" or recent issues for dependency changes, weekly sweeps, CVEs, GHSAs, OSV IDs, scanner findings, internet-facing infrastructure, public zero-day claims, or known exploited vulnerabilities.
 
+The default path is repo-root relative. `paladin-setup` should create `references/security-sources.md` in the target repo from Paladin's bundled source list when the target repo does not already have one.
+
 When source lookup is needed, Paladin should download or query advisory metadata from official feeds, evaluate potentially relevant records one by one against local repo inventory, and report only records that need action or verification. It may report `already protected` when useful, such as when a high-profile exploit exists but this repo already uses the fixed package.
 
 Paladin must not download proof-of-concept exploit repositories, exploit payloads, weaponized code, or exploit playbooks.

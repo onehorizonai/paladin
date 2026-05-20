@@ -129,8 +129,9 @@ paladin_custom_action: ""
 This file controls what Paladin does after it finds security work in this repo.
 ```
 
-- Use `references/security-sources.md` as the default source list.
-- If `references/security-sources.md` is missing in the repo and the bundled Paladin source list is available at `../../references/security-sources.md`, create `references/security-sources.md` from that file. This is the only extra file setup should create.
+- Use repo-root `references/security-sources.md` as the canonical source list.
+- If `references/security-sources.md` is missing in the target repo, locate the bundled Paladin source list by walking up from the current skill folder until both `plugin.json` and `references/security-sources.md` exist, then copy that file into the target repo. This is the only extra file setup should create.
+- Do not use parent-directory fallback paths from an individual skill folder; they resolve differently across `.agents`, `.claude`, and plugin installs.
 - If the source list cannot be created, still write `PALADIN.md` and include the missing source list in `Still needed`.
 - If the selected destination tool is unavailable, still create `PALADIN.md` and state what remains to configure.
 

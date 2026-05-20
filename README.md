@@ -107,6 +107,8 @@ Run:
 
 It also asks where the follow-up should go. One Horizon is the default, but not the only option. You can route findings to Linear, Jira, email, or a custom workflow.
 
+Setup uses repo-root `references/security-sources.md` as the default advisory source list and creates it from Paladin's bundled source list when the target repo is missing it.
+
 ### 3. Run Paladin
 
 Start with the dispatcher when you want Paladin to choose the right mode:
@@ -336,8 +338,11 @@ It looks at:
 git status --porcelain
 git diff --name-only
 git diff --cached --name-only
+git branch --show-current
 gh pr view --json number,title,url
 ```
+
+If `gh` is missing or unauthenticated, `paladin-assess` checks common PR environment variables such as `GH_PR_NUMBER`, `PR_NUMBER`, `CHANGE_ID`, `GITHUB_HEAD_REF`, and CI pull-request URLs. If neither local changes nor PR signals exist, it surfaces the branch note before asking which mode to run.
 
 Routing rules:
 
@@ -347,7 +352,7 @@ Routing rules:
 | Existing finding, CVE, CWE, dependency alert, scanner result, or vulnerability description | `paladin-mitigate` |
 | Repo audit, weekly sweep, recently merged PR review, metrics, checklist, baseline review, or backlog | `paladin-repo-audit` |
 | Changed files, staged files, open PR, or pasted diff | `paladin-pr-review` |
-| No clear context | Ask whether you want PR review, repo audit, or mitigation planning |
+| No clear context | Ask whether you want setup, PR review, repo audit, or mitigation planning |
 
 ---
 
@@ -377,8 +382,12 @@ skills/
   paladin-assess/       # Default entry - detects security review context and routes
   paladin-setup/        # Creates or updates PALADIN.md for a repo
   paladin-pr-review/    # PR, diff, staged, and uncommitted change security review
+    references/          # PR output contract and automation schema
   paladin-repo-audit/   # Repo audit and weekly security sweep
+    references/          # Separate audit and weekly sweep mode contracts
   paladin-mitigate/     # Known finding mitigation planning and regression tests
+references/
+  security-sources.md   # Canonical bundled advisory source list
 ```
 
 Each skill has a `SKILL.md` workflow, `agents/openai.yaml` UI metadata, and local icon assets.

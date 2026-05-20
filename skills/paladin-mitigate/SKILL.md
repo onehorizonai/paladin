@@ -19,7 +19,7 @@ Convert a known security weakness into the smallest defensible fix plan and the 
    - production reachability
    - confidence: confirmed / likely / uncertain
 3. Map it to OWASP Top 10:2025, CWE Top 25:2025 when applicable, and ASVS 5.0.0 controls.
-4. If the finding includes a CVE, GHSA, OSV ID, dependency alert, scanner result, public zero-day claim, known-exploited claim, or "latest/recent" issue context, read the source list from `PALADIN.md` `paladin_source_list`. If no config is available, use `../../references/security-sources.md`.
+4. If the finding includes a CVE, GHSA, OSV ID, dependency alert, scanner result, public zero-day claim, known-exploited claim, or "latest/recent" issue context, read the source list from `PALADIN.md` `paladin_source_list`. If no config is available, use repo-root `references/security-sources.md`.
 5. Inspect the local code path if available. Prefer existing components, validators, middleware, authorization helpers, and test patterns.
 6. Propose the smallest mitigation that closes the attack path.
 7. Require regression tests for both allowed and denied behavior where authorization or validation is involved.
