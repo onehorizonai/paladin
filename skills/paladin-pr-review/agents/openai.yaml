@@ -1,0 +1,7 @@
+interface:
+  display_name: "Paladin PR Review"
+  short_description: "Find actionable PR security risks."
+  icon_small: "./assets/icon-small.png"
+  icon_large: "./assets/icon-large.png"
+  brand_color: "#111827"
+  default_prompt: "Use $paladin-pr-review to review this PR for actionable security risks."

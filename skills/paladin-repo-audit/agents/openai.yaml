@@ -1,0 +1,7 @@
+interface:
+  display_name: "Paladin Repo Audit"
+  short_description: "Find the riskiest security work in a repo."
+  icon_small: "./assets/icon-small.png"
+  icon_large: "./assets/icon-large.png"
+  brand_color: "#111827"
+  default_prompt: "Use $paladin-repo-audit to find the riskiest security work in this repository."

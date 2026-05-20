@@ -1,0 +1,40 @@
+{
+  "name": "paladin",
+  "description": "Security review for PRs, local repositories, and vulnerability mitigation planning.",
+  "version": "1.0.0",
+  "author": {
+    "name": "One Horizon"
+  },
+  "homepage": "https://onehorizon.ai",
+  "license": "Apache-2.0",
+  "keywords": [
+    "security",
+    "code-review",
+    "owasp",
+    "cwe",
+    "asvs",
+    "vulnerability-management"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Paladin",
+    "shortDescription": "Catch practical security issues before merge.",
+    "longDescription": "Paladin helps engineering teams review PRs, audit risky code paths, and turn known security findings into mitigation plans with regression tests. It is built for defensive application-security review and uses OWASP Top 10, CWE Top 25, OWASP ASVS, and known-exploited vulnerability guidance as its baseline.",
+    "developerName": "One Horizon",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive"
+    ],
+    "websiteURL": "https://onehorizon.ai",
+    "defaultPrompt": [
+      "Set up Paladin for this repo.",
+      "Review this PR with Paladin.",
+      "Find the riskiest security areas in this repo.",
+      "Turn this finding into a mitigation plan.",
+      "Detect my security review context."
+    ],
+    "brandColor": "#111827",
+    "composerIcon": "./assets/logo-small.png",
+    "logo": "./assets/logo-large.png"
+  }
+}

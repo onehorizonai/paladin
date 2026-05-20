@@ -1,0 +1,23 @@
+{
+  "name": "paladin",
+  "description": "Security review for PRs and local repositories. Paladin helps engineering teams catch practical application-security issues, audit risky code paths, and turn known findings into mitigation plans with regression tests.",
+  "version": "1.0.0",
+  "author": {
+    "name": "One Horizon"
+  },
+  "homepage": "https://onehorizon.ai",
+  "license": "Apache-2.0",
+  "keywords": [
+    "security",
+    "code-review",
+    "owasp",
+    "cwe",
+    "asvs",
+    "vulnerability-management",
+    "dependency-review",
+    "secure-code-review",
+    "application-security"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}

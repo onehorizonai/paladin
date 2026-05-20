@@ -1,0 +1,7 @@
+interface:
+  display_name: "Paladin Assess"
+  short_description: "Pick the right security review mode."
+  icon_small: "./assets/icon-small.png"
+  icon_large: "./assets/icon-large.png"
+  brand_color: "#111827"
+  default_prompt: "Use $paladin-assess to choose the right Paladin review mode."

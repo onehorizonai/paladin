@@ -1,0 +1,22 @@
+{
+  "name": "paladin",
+  "owner": {
+    "name": "One Horizon"
+  },
+  "metadata": {
+    "description": "Security review for PRs, local repositories, and vulnerability mitigation planning.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "paladin",
+      "source": ".",
+      "description": "Paladin helps engineering teams review PRs, audit risky code paths, and turn known security findings into mitigation plans with regression tests.",
+      "version": "1.0.0",
+      "author": {
+        "name": "One Horizon"
+      },
+      "license": "Apache-2.0"
+    }
+  ]
+}

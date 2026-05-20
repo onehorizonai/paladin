@@ -1,0 +1,7 @@
+interface:
+  display_name: "Paladin Setup"
+  short_description: "Create PALADIN.md for a repo."
+  icon_small: "./assets/icon-small.png"
+  icon_large: "./assets/icon-large.png"
+  brand_color: "#111827"
+  default_prompt: "Use $paladin-setup to configure Paladin for this repository."

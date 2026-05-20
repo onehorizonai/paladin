@@ -1,0 +1,7 @@
+interface:
+  display_name: "Paladin Mitigate"
+  short_description: "Turn findings into fixes and tests."
+  icon_small: "./assets/icon-small.png"
+  icon_large: "./assets/icon-large.png"
+  brand_color: "#111827"
+  default_prompt: "Use $paladin-mitigate to turn this security finding into a fix plan and tests."

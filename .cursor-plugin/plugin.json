@@ -1,0 +1,20 @@
+{
+  "name": "paladin",
+  "description": "Security review for PRs, local repositories, and vulnerability mitigation planning.",
+  "version": "1.0.0",
+  "author": {
+    "name": "One Horizon"
+  },
+  "homepage": "https://onehorizon.ai",
+  "license": "Apache-2.0",
+  "keywords": [
+    "security",
+    "code-review",
+    "owasp",
+    "cwe",
+    "asvs",
+    "vulnerability-management"
+  ],
+  "skills": "./skills/",
+  "logo": "./assets/logo.svg"
+}
