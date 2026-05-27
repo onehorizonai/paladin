@@ -1,6 +1,6 @@
 ---
 name: paladin-repo-audit
-description: Audit a local repository for security-relevant architecture, configuration, dependency, auth, authorization, input-handling, data-flow, secrets, logging, and infrastructure risks. Use for broad security checklists, weekly sweeps, repository security backlog creation, OWASP/CWE baseline review, or public GPT-style codebase audit guidance.
+description: Produce backlog-style repository security audits and weekly security metrics. Use for security backlog creation, recently merged PR sweeps, weekly reporting, management metrics, recurring pattern review, and prioritized audit items; use paladin-security-review for broader one-off repo sweeps or current advisory checks.
 ---
 
 # Repository Security Audit
@@ -11,7 +11,7 @@ Route repository security work to the right audit mode, then load only the match
 
 1. Read `PALADIN.md` if present.
 2. Choose exactly one mode:
-   - Use repository audit mode for broad baseline review, checklist review, public GPT-style codebase guidance, or security backlog creation.
+   - Use repository audit mode for prioritized backlog creation, baseline checklist review, or management-ready audit items.
    - Use weekly security sweep mode for recently merged PRs, dependency changes, open findings, known-exploited vulnerabilities, recurring patterns, metrics, or weekly reporting.
 3. Read the matching reference:
    - Repository audit: `references/audit-mode.md`

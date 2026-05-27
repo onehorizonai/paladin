@@ -36,12 +36,14 @@ That context helps Paladin avoid noisy reports. If existing authorization, valid
 
 ## What Paladin Does
 
-Paladin gives teams three practical security workflows:
+Paladin gives teams practical security workflows:
 
 | Workflow | What you get |
 | --- | --- |
-| PR review | A focused review of changed code for medium, high, and critical security findings |
-| Repo audit | A prioritized local backlog for risky areas in the codebase |
+| Code review | A focused review of changed, staged, uncommitted, branch, or pasted code |
+| PR review | PR context, previous thread follow-up, inline comments, and final security decision |
+| Security review | A broader repo sweep with misuse-case and current advisory checks |
+| Repo audit | A prioritized local backlog or weekly metrics review |
 | Mitigation planning | A concrete fix plan for a known finding, CVE, CWE, dependency alert, or scanner result |
 
 It checks for issues around:
@@ -53,7 +55,7 @@ It checks for issues around:
 - dependencies, build scripts, supply chain risk, and known exploited vulnerabilities
 - infrastructure, deployment config, CORS, headers, and exposed admin paths
 
-Every real finding should include evidence, impact, mitigation, a required regression test, severity, and whether it should block the PR.
+Every real finding should include evidence, impact, mitigation, a required regression test, confidence, severity, and whether it should block the PR. Paladin should only report high-confidence findings where attacker-controlled input or privilege reaches a sensitive sink and existing controls do not block the path.
 
 ---
 
@@ -120,7 +122,9 @@ Start with the dispatcher when you want Paladin to choose the right mode:
 Or call a workflow directly:
 
 ```text
+/paladin-code-review
 /paladin-pr-review
+/paladin-security-review
 /paladin-repo-audit
 /paladin-mitigate
 ```
@@ -130,6 +134,7 @@ Plain English works too:
 ```text
 Use Paladin to review my uncommitted changes.
 Use Paladin to review this PR for security risks.
+Use Paladin to run a broad security sweep with current advisory checks.
 Use Paladin to audit this repository for security risks.
 Use Paladin to turn this CVE into a mitigation plan.
 ```
@@ -141,8 +146,10 @@ Use Paladin to turn this CVE into a mitigation plan.
 | Moment | Run |
 | --- | --- |
 | You start work with changed files | `/paladin` |
+| You want a local diff reviewed before a PR | `/paladin-code-review` |
 | You are about to open or merge a PR | `/paladin-pr-review` |
 | A PR touches auth, permissions, input handling, dependencies, infra, logs, or file handling | `/paladin-pr-review` |
+| You want a broad repo security sweep or current advisory check | `/paladin-security-review` |
 | You want a weekly security sweep | `/paladin-repo-audit` |
 | A scanner, dependency alert, CVE, CWE, or review note appears | `/paladin-mitigate` |
 
@@ -167,7 +174,7 @@ Optional `pre-push` reminder:
 echo ""
 echo "Before pushing, consider running:"
 echo "  /paladin              detect the right security review mode"
-echo "  /paladin-pr-review    review the diff for security findings"
+echo "  /paladin-code-review  review changed code for security findings"
 echo ""
 ```
 
@@ -315,6 +322,7 @@ Then it gives the technical details needed to fix or reject the finding:
 - attack scenario and impact
 - recommended mitigation
 - required regression test
+- confidence and why trusted config, client-only checks, or framework protections do not block the issue
 
 If the evidence is not strong enough, Paladin should say what is missing instead of inventing a finding.
 
@@ -326,8 +334,10 @@ If the evidence is not strong enough, Paladin should say what is missing instead
 | --- | --- |
 | `paladin-assess` | You are not sure where to start |
 | `paladin-setup` | A repo needs `PALADIN.md` or action destination setup |
-| `paladin-pr-review` | A diff, staged change, uncommitted change, branch, or PR needs security review |
-| `paladin-repo-audit` | A repository needs a security backlog or weekly sweep |
+| `paladin-code-review` | A diff, staged change, uncommitted change, branch, or pasted diff needs security review |
+| `paladin-pr-review` | A pull request needs PR context, inline comments, or a final security decision |
+| `paladin-security-review` | A repository needs a broad security sweep, misuse-case review, or current advisory check |
+| `paladin-repo-audit` | A repository needs a backlog-style audit, weekly metrics report, or recently merged PR sweep |
 | `paladin-mitigate` | A known finding, CVE, CWE, dependency alert, or scanner result needs a fix plan |
 
 `/paladin` runs `paladin-assess`, checks the repo state, and routes to the right workflow.
@@ -350,9 +360,11 @@ Routing rules:
 | --- | --- |
 | Setup, config, `PALADIN.md`, action destination, or first-time install | `paladin-setup` |
 | Existing finding, CVE, CWE, dependency alert, scanner result, or vulnerability description | `paladin-mitigate` |
-| Repo audit, weekly sweep, recently merged PR review, metrics, checklist, baseline review, or backlog | `paladin-repo-audit` |
-| Changed files, staged files, open PR, or pasted diff | `paladin-pr-review` |
-| No clear context | Ask whether you want setup, PR review, repo audit, or mitigation planning |
+| Explicit PR review, open PR, inline PR comments, or PR diff | `paladin-pr-review` |
+| Changed files, staged files, uncommitted changes, branch diff, or pasted diff | `paladin-code-review` |
+| Broad security review, repo sweep, current advisory check, public zero-day claim, or known-exploited vulnerability check | `paladin-security-review` |
+| Backlog-style repo audit, weekly metrics report, recently merged PR sweep, or security backlog | `paladin-repo-audit` |
+| No clear context | Ask whether you want setup, code review, PR review, broad security review, repo audit, or mitigation planning |
 
 ---
 
@@ -381,8 +393,11 @@ It refuses exploit playbooks, live-target scanning, stealth, persistence, creden
 skills/
   paladin-assess/       # Default entry - detects security review context and routes
   paladin-setup/        # Creates or updates PALADIN.md for a repo
-  paladin-pr-review/    # PR, diff, staged, and uncommitted change security review
-    references/          # PR output contract and automation schema
+  paladin-code-review/  # Diff, staged, uncommitted, branch, and pasted change security review
+    references/          # Changed-code output contract
+  paladin-pr-review/    # PR context, inline comments, and PR security decisions
+  paladin-security-review/ # Broad repo security sweep and current advisory checks
+    references/          # Broad review output contract
   paladin-repo-audit/   # Repo audit and weekly security sweep
     references/          # Separate audit and weekly sweep mode contracts
   paladin-mitigate/     # Known finding mitigation planning and regression tests

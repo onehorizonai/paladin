@@ -1,0 +1,7 @@
+interface:
+  display_name: "Paladin Security Review"
+  short_description: "Sweep a repo for actionable security risk."
+  icon_small: "./assets/icon-small.png"
+  icon_large: "./assets/icon-large.png"
+  brand_color: "#111827"
+  default_prompt: "Use $paladin-security-review to run a broad security sweep with current advisory checks."
