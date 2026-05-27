@@ -13,10 +13,12 @@ When Paladin is invoked without a specific skill, run `paladin-assess`.
 | Context | Route |
 | --- | --- |
 | Setup, configuration, or `PALADIN.md` creation/update | `paladin-setup` |
-| Changed, staged, or PR diff | `paladin-pr-review` |
-| Explicit repository audit, weekly sweep, or security backlog | `paladin-repo-audit` |
 | Existing finding, CVE, CWE, dependency alert, or scanner result | `paladin-mitigate` |
-| No clear context | Ask whether the user wants setup, PR review, repo audit, or mitigation planning |
+| Explicit PR review, open PR, or PR diff | `paladin-pr-review` |
+| Changed, staged, uncommitted, branch, or pasted diff | `paladin-code-review` |
+| Broad security review, repo sweep, public zero-day claim, or known-exploited vulnerability check | `paladin-security-review` |
+| Backlog-style repository audit, weekly metrics report, or recently merged PR sweep | `paladin-repo-audit` |
+| No clear context | Ask whether the user wants setup, code review, PR review, broad security review, repo audit, or mitigation planning |
 
 Read `PALADIN.md` if present and use its YAML frontmatter for conversion defaults.
 
@@ -56,19 +58,24 @@ Prioritize:
 Report only medium, high, or critical findings with:
 
 - concrete code evidence
+- high confidence, roughly 80% or better
 - plausible attack path
 - threat model context
+- attacker-controlled input or privilege reaching a sensitive sink
 - automation check status when available
 - impact
 - recommended mitigation
 - required regression test
 - blocking status
 
-Do not report speculative concerns, generic checklist items, style issues, or findings already blocked by existing auth, validation, escaping, parameterization, allowlists, or type constraints.
+Do not report speculative concerns, generic checklist items, style issues, or findings already blocked by existing auth, validation, escaping, parameterization, allowlists, framework protections, or type constraints.
+
+Do not treat environment variables, server-side config, CLI flags, hardcoded constants, deployment settings, client-side checks, or framework-protected APIs as attacker-controlled without repo evidence.
 
 Use stable output values. Do not invent alternate labels:
 
 - Severity: `Medium`, `High`, `Critical`
+- Confidence: `High`
 - PR decision: `Approved`, `Approved with non-blocking follow-up`, `Changes requested`, `Escalated for deeper security review`
 - Check status: `passed`, `failed`, `not applicable`, `not available`
 - Audit priority: `P0`, `P1`, `P2`, `P3`

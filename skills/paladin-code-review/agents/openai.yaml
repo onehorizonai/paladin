@@ -1,0 +1,7 @@
+interface:
+  display_name: "Paladin Code Review"
+  short_description: "Review changed code for security risks."
+  icon_small: "./assets/icon-small.png"
+  icon_large: "./assets/icon-large.png"
+  brand_color: "#111827"
+  default_prompt: "Use $paladin-code-review to review my changed code for actionable security risks."

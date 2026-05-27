@@ -1,6 +1,6 @@
 ---
 name: paladin-assess
-description: Paladin's security context dispatcher. Use when no specific Paladin skill is requested, when the user asks for a security review but the mode is unclear, or when Codex should inspect git state and route to PR review, repository audit, or vulnerability mitigation.
+description: Paladin's security context dispatcher. Use when no specific Paladin skill is requested, when the user asks for a security review but the mode is unclear, or when Codex should inspect git state and route to code review, PR review, broad security review, repository audit, setup, or vulnerability mitigation.
 ---
 
 # Assess
@@ -22,8 +22,10 @@ Use exactly one route:
 | --- | --- |
 | `paladin-setup` | The user asks to set up Paladin, configure Paladin, create or update `PALADIN.md`, choose an action destination, or initialize repo config |
 | `paladin-mitigate` | The user provides a CVE, CWE, dependency alert, scanner result, audit finding, or vulnerability description |
-| `paladin-repo-audit` | The user asks for a repo audit, weekly sweep, recently merged PR review, metrics, checklist, baseline review, or backlog |
-| `paladin-pr-review` | Changed files, staged files, an open PR, or a pasted diff needs security review |
+| `paladin-pr-review` | The user explicitly asks for PR review, an open PR exists for the current branch, or a PR diff is supplied |
+| `paladin-code-review` | Changed files, staged files, uncommitted local changes, branch diffs, or pasted diffs need security review |
+| `paladin-security-review` | The user asks for a broad security review, repo sweep, current advisory check, public zero-day claim evaluation, known-exploited vulnerability check, or exposure review |
+| `paladin-repo-audit` | The user specifically asks for a backlog-style repository audit, weekly metrics report, or recently merged PR sweep |
 
 If more than one route matches, use the first matching row in this table. Do not ask a question when the route is clear.
 
@@ -33,29 +35,32 @@ If more than one route matches, use the first matching row in this table. Do not
 
 If the user asks to set up Paladin, configure Paladin, create or update `PALADIN.md`, choose an action destination, or initialize repo config, route to `paladin-setup`.
 
-Announce:
-
-```text
-Paladin sees a setup request.
-Routing to repo setup so we can create or update PALADIN.md.
-```
-
 ### Check B - Existing Finding
 
 If the user provides a CVE, CWE, dependency alert, scanner finding, audit note, or vulnerability description, route to `paladin-mitigate`.
 
-Announce:
+### Check C - Explicit PR Or Open PR
 
-```text
-Paladin sees an existing security finding.
-Routing to mitigation planning so we can turn it into concrete code changes and regression tests.
+If the user asks for a PR review, pull request review, inline review comments, or PR decision, route to `paladin-pr-review`.
+
+Otherwise run:
+
+```bash
+git branch --show-current
+gh pr view --json number,title,url 2>/dev/null
 ```
 
-### Check C - Explicit Audit Or Weekly Sweep
+If a PR exists for the current branch, route to `paladin-pr-review`.
 
-If the user asks for a repo audit, checklist, baseline review, weekly sweep, recently merged PR review, security metrics, or security backlog, route to `paladin-repo-audit`.
+If `gh` is missing, unauthenticated, or fails, check common PR environment signals:
 
-### Check D - Changed Files
+```bash
+printf '%s\n' "$GH_PR_NUMBER" "$PR_NUMBER" "$CHANGE_ID" "$GITHUB_HEAD_REF" "$GITHUB_REF" "$CI_PULL_REQUEST" "$CIRCLE_PULL_REQUEST" "$BUILDKITE_PULL_REQUEST"
+```
+
+If a signal identifies a PR number, PR URL, or pull-request ref, route to `paladin-pr-review`.
+
+### Check D - Local Changed Code
 
 Run:
 
@@ -66,48 +71,20 @@ git diff --cached --name-only
 git diff --stat
 ```
 
-If there are changed or staged files, route to `paladin-pr-review`.
+If there are changed or staged files, route to `paladin-code-review`.
 
-Announce:
+### Check E - Broad Security Review
 
-```text
-Paladin sees local code changes in [N] file(s).
-Routing to PR security review and focusing on changed code plus required surrounding paths.
-```
+If the user asks for a security review, repo sweep, current advisory check, public zero-day claim evaluation, known-exploited vulnerability check, or exposure review, route to `paladin-security-review`.
 
-### Check E - Open PR
-
-Run:
-
-```bash
-git branch --show-current
-gh pr view --json number,title,url 2>/dev/null
-```
-
-If a PR exists for the current branch, route to `paladin-pr-review`.
-
-If `gh` is missing, unauthenticated, or fails:
-
-1. Check common PR environment signals before giving up:
-
-```bash
-printf '%s\n' "$GH_PR_NUMBER" "$PR_NUMBER" "$CHANGE_ID" "$GITHUB_HEAD_REF" "$GITHUB_REF" "$CI_PULL_REQUEST" "$CIRCLE_PULL_REQUEST" "$BUILDKITE_PULL_REQUEST"
-```
-
-2. If an environment signal identifies a PR number, PR URL, or pull-request ref, route to `paladin-pr-review`.
-3. If no signal exists, surface a short branch note and continue to Check F:
-
-```text
-Paladin could not verify an open PR for branch [branch] because gh is unavailable or unauthenticated.
-No local diff was found, so routing needs one clarification.
-```
+If the user specifically asks for a backlog-style repository audit, weekly metrics report, recently merged PR sweep, or security backlog, route to `paladin-repo-audit`.
 
 ### Check F - No Clear Context
 
 Ask one concise question:
 
 ```text
-Do you want setup, PR security review, repository audit, or mitigation planning for a known finding?
+Do you want setup, code security review, PR security review, broad security review, repository audit, or mitigation planning for a known finding?
 ```
 
 ## Routing Rules
